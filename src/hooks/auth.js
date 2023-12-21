@@ -9,7 +9,7 @@ export const saveTasks = async (user, task) =>{
         description: task?.description,
         deadline: task?.deadline,
         priority: task?.priority,
-        status: "to do"
+        status: "todo"
     }
     const {data} = await axiosPublic.post('/tasks', newTask)
     return data;
@@ -26,3 +26,10 @@ export const updateTask = async (id, newTask) => {
     const {data} = await axiosPublic.put(`tasks/${id}`, newTask)
     return data;
 }
+// 
+export const updateStatus = async (id, status) => {
+    console.log(status)
+    const {data} = await axiosPublic.put(`task/${id}`, status)
+    return data;
+}
+
