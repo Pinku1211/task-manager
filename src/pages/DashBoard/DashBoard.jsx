@@ -1,34 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '../../components/Shared/Container';
 import { useForm } from 'react-hook-form';
-import Todo from './Todo';
 import Ongoing from './Ongoing';
 import Completed from './Completed';
+import { saveTasks } from '../../hooks/auth';
+import useAuth from '../../hooks/useAuth';
+import toast from 'react-hot-toast';
+import useTasks from '../../hooks/useTasks';
+import Todo from './Todo';
+
 
 const DashBoard = () => {
+    const { user } = useAuth()
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [tasks, setTasks] = useState([]);
-
+    const [tasks, refetch] = useTasks()
+    console.log(tasks)
+    // useEffect(() => {
+    //   axiosPublic.get("/tasks")
+    //     .then(res => {
+    //         setAllTasks(res.data)
+    //     })
+    // },[])
 
     const onSubmit = async (data) => {
-        console.log(data)
-        setTasks(...tasks, data)
+        await saveTasks(user, data);
+        await refetch();
+        toast.success('successfully added!');
     }
 
     return (
         <div className='bg-slate-200 min-h-screen py-20'>
             <Container>
                 <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
-                    <div className="card w-full bg-base-100 shadow-xl text-center p-8 pb-0">
-                        <h2 className="card-title">Todo</h2>
+                    <div className="card w-full bg-base-100 shadow-xl pb-0">
                         <div className="card-body">
-                            <div>
-                                <Todo tasks={tasks} />
-                                <Todo tasks={tasks} />
-                            </div>
-                            <div>
-                                <button className="btn btn-primary mt-8" onClick={() => document.getElementById('my_modal_2').showModal()}>Add New</button>
-                                <dialog id="my_modal_2" className="modal">
+                        <h1 className='text-xl font-semibold text-center'>Todo</h1>
+                            {
+                                tasks?.map(task =>  <Todo key={task._id} task={task} refetch={refetch}/>)
+                            }
+                            {/* <Todos tasks={tasks} refetch={refetch}/> */}
+                            <div className='flex justify-center'>
+                                <button className="btn btn-primary mt-8" onClick={() => document.getElementById('my_modal_1').showModal()}>Add New</button>
+                                <dialog id="my_modal_1" className="modal">
                                     <div className="modal-box">
                                         <form
                                             onSubmit={handleSubmit(onSubmit)}
@@ -51,20 +64,20 @@ const DashBoard = () => {
                                             </div>
                                             <div className="form-control">
                                                 <input
-                                                    {...register("deadlines", { required: true })}
+                                                    {...register("deadline", { required: true })}
                                                     type="text"
-                                                    placeholder="deadlines"
+                                                    placeholder="deadline"
                                                     className="input input-bordered" required />
-                                                {errors.deadlines && <span className='text-rose-500'>Please Provide deadlines</span>}
+                                                {errors.deadline && <span className='text-rose-500'>Please Provide deadlines</span>}
                                             </div>
                                             <div className="form-control">
                                                 <select
                                                     {...register("priority", { required: true })}
                                                     className="select select-bordered w-full max-w-xs">
                                                     <option disabled selected>Pick the Priority</option>
-                                                    <option >Han Solo</option>
-                                                    <option >Greedo</option>
-                                                    <option >Greedo</option>
+                                                    <option >Low</option>
+                                                    <option >Moderate</option>
+                                                    <option >High</option>
                                                 </select>
                                                 {errors.priority && <span className='text-rose-500'>Please select proirity</span>}
                                             </div>
@@ -82,10 +95,10 @@ const DashBoard = () => {
                         </div>
                     </div>
                     <div>
-                        <Ongoing tasks={tasks} />
+                        <Ongoing />
                     </div>
                     <div>
-                        <Completed tasks={tasks} />
+                        <Completed />
                     </div>
                 </div>
             </Container>
