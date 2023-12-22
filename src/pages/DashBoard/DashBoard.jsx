@@ -6,9 +6,9 @@ import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import useTasks from '../../hooks/useTasks';
 import Section from './Todo';
-import { MdDashboardCustomize } from "react-icons/md";
+import { MdDashboardCustomize, MdHome } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
-
+import { Link } from 'react-router-dom';
 
 
 const DashBoard = () => {
@@ -20,7 +20,6 @@ const DashBoard = () => {
     const [completed, setCompleted] = useState([])
     const statuses = ['todo', 'ongoing', 'completed']
 
-
     useEffect(() => {
         const fTodos = tasks.filter(task => task.status === "todo")
         const fOngoing = tasks.filter(task => task.status === "ongoing")
@@ -29,6 +28,7 @@ const DashBoard = () => {
         setOngoing(fOngoing)
         setCompleted(fCompleted)
     }, [tasks])
+    console.log(tasks)
 
     const onSubmit = async (data) => {
         await saveTasks(user, data);
@@ -107,7 +107,7 @@ const DashBoard = () => {
                     <input id="my-drawer" type="checkbox" className="drawer-toggle" />
                     <div className="drawer-content">
                         {/* Page content here */}
-                        <label htmlFor="my-drawer" className="drawer-button"><MdDashboardCustomize className='text-3xl text-gray-900' /></label>
+                        <label htmlFor="my-drawer" className="drawer-button cursor-pointer"><MdDashboardCustomize className='text-3xl text-gray-900' /></label>
                         <h1 className='text-5xl font-thin text-center mb-10'>Your Dashboard</h1>
                     </div>
                     <div className="drawer-side opacity-100 z-1000">
@@ -116,8 +116,9 @@ const DashBoard = () => {
                             {/* Sidebar content here */}
                             <li><button className="btn bg-slate-400 text-white border-none px-10 text-center pt-4" onClick={() => document.getElementById('my_modal_1').showModal()}>Add New Task</button></li>
                             <div>
-                                <li><button onClick={handleLogout} className="btn bg-slate-400 text-white border-none px-10 text-center pt-4"><CiLogout className='text-xl'/>Log Out</button></li>
-                                <div className='flex items-center gap-4 mt-4'>
+                                <li><button className=" btn bg-slate-400 my-4 text-white border-none px-20 text-center pt-4"><Link to='/'><h1 className='flex justify-center items-center gap-3'><MdHome className='text-xl'/>Home</h1></Link></button></li>
+                                <li><button onClick={handleLogout} className="btn bg-slate-400 my-4 text-white border-none px-10 text-center pt-4"><CiLogout className='text-xl' />Log Out</button></li>
+                                <div className='flex items-center gap-4'>
                                     <img className='w-12 h-12 rounded-full' src={user?.photoURL} alt="" />
                                     <h1>{user?.displayName}</h1>
                                 </div>
