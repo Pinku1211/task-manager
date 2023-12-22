@@ -12,7 +12,7 @@ import Section from './Todo';
 const DashBoard = () => {
     const { user } = useAuth()
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [tasks, refetch] = useTasks()
+    const [tasks, refetch] = useTasks(user?.email)
     const [todos, setTodos] = useState([])
     const [ongoing, setOngoing] = useState([])
     const [completed, setCompleted] = useState([])
@@ -37,7 +37,7 @@ const DashBoard = () => {
     return (
         <div className='bg-slate-200 min-h-screen py-20'>
             <div className='flex justify-center mb-10'>
-                <button className="btn btn-primary bg-slate-500 border-none px-10" onClick={() => document.getElementById('my_modal_1').showModal()}>Add New Task</button>
+                <button className="btn bg-blue-400 text-white border-none px-10" onClick={() => document.getElementById('my_modal_1').showModal()}>Add New Task</button>
                 <div className='flex justify-center'>
                     <dialog id="my_modal_1" className="modal">
                         <div className="modal-box">
@@ -63,7 +63,7 @@ const DashBoard = () => {
                                 <div className="form-control">
                                     <input
                                         {...register("deadline", { required: true })}
-                                        type="text"
+                                        type="date"
                                         placeholder="deadline"
                                         className="input input-bordered" required />
                                     {errors.deadline && <span className='text-rose-500'>Please Provide deadlines</span>}

@@ -1,14 +1,13 @@
 import React from 'react';
-import { deleteTask, updateStatus, updateTask } from '../../hooks/auth';
-// import { useForm } from 'react-hook-form';
+import { deleteTask, updateStatus } from '../../hooks/auth';
 import { ImCross } from 'react-icons/im';
 import toast from 'react-hot-toast';
-// import { MdEdit } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 import { useDrag, useDrop } from 'react-dnd'
+import { Link } from 'react-router-dom';
 
 
-const Section = ({ tasks, refetch, status, todos, ongoing, completed }) => {
-    // const { register, handleSubmit, formState: { errors } } = useForm();
+const Section = ({ refetch, status, todos, ongoing, completed }) => {
 
     const [{ isOver }, drop] = useDrop(() => ({
         accept: "task",
@@ -20,29 +19,31 @@ const Section = ({ tasks, refetch, status, todos, ongoing, completed }) => {
     }))
 
     const addItemToSection = async id => {
-        await updateStatus(id, {status})
+        await updateStatus(id, { status })
         await refetch()
-        if(status !== "todo"){
+        if (status !== "todo") {
             toast.success('updated successfully!')
-        }  
+        }
     }
 
 
     let text = "Todo"
-    let bg = "bg-slate-500"
+    let bg = "bg-[#265073]"
     let tasksToMap = todos
 
     if (status === "ongoing") {
         text = "Ongoing"
+        bg = "bg-[#163020]"
         tasksToMap = ongoing
     }
     if (status === "completed") {
         text = "Completed"
+        bg = "bg-[#607274]"
         tasksToMap = completed
     }
 
     return (
-        <div ref={drop} className={`w-full rounded-md p-2 ${isOver ? "bg-slate-300" : ""}`}>
+        <div ref={drop} className={`w-full rounded-md p-2 ${isOver ? "bg-slate-100" : ""}`}>
             <Header text={text} bg={bg} count={tasksToMap.length} />
             {
                 tasksToMap?.map(task => <Task key={task._id} task={task} refetch={refetch}></Task>)
@@ -63,7 +64,6 @@ const Header = ({ text, bg, count }) => {
         </div>
     )
 }
-
 const Task = ({ task, refetch }) => {
 
     const [{ isDragging }, drag] = useDrag(() => ({
@@ -83,12 +83,30 @@ const Task = ({ task, refetch }) => {
 
 
     return <div ref={drag} key={task._id} className={`bg-base-100 shadow-xl rounded-md ${isDragging ? "opacity-25" : ""} p-2 my-3 cursor-pointer`}>
-        <div className="flex items-center justify-between text-left px-2">
-            <p>{task.title}</p>
-            <p>{task.description}</p>
-            <p>{task.deadline}</p>
-            <p>{task.priority}</p>
-            <ImCross onClick={() => handleDelete(task._id)} className='text-sm' />
+        <div className="flex items-center justify-between text-left">
+            <div className="overflow-x-auto">
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Deadline</th>
+                            <th>Priority</th>
+                            <th><ImCross onClick={() => handleDelete(task._id)} className='text-md text-black hover:scale-125' /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{task.title}</td>
+                            <td>{task.description}</td>
+                            <td>{task.deadline}</td>
+                            <td><div className="badge badge-accent">{task.priority}</div></td>
+                            <td><Link to={`/dashboard/update/${task._id}`}><MdEdit className='text-lg hover:scale-125'/></Link></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
         </div>
 
     </div>

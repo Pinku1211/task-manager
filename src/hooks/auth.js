@@ -23,13 +23,18 @@ export const deleteTask = async id => {
 
 // update a task
 export const updateTask = async (id, newTask) => {
-    const {data} = await axiosPublic.put(`tasks/${id}`, newTask)
+    const {data} = await axiosPublic.put(`/task/${id}`, newTask)
     return data;
 }
 // 
 export const updateStatus = async (id, status) => {
     console.log(status)
-    const {data} = await axiosPublic.put(`task/${id}`, status)
+    const {data} = await axiosPublic.put(`/status/${id}`, status)
+    return data;
+}
+
+export const getSingleTask = async (id) => {
+    const {data} = await axiosPublic.get(`/task/${id}`)
     return data;
 }
 
