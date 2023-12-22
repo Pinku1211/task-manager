@@ -21,12 +21,10 @@ const SignUp = () => {
         await updateUserProfile(name, AnoImg)
         navigate('/')
         toast.success("successfully signed up!")
-        // save user
-        // const savedUser = await saveUser(loggedUser)
-        // console.log(savedUser)
       })
       .catch(err => {
         console.log(err)
+        toast.error('something wrong')
       })
   }
 

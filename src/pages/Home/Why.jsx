@@ -31,10 +31,12 @@ const Why = () => {
                         <button className='px-4 py-2 bg-blue-400 rounded-3xl text-white mt-2'>See More</button>
                     </div>
                 </div>
-                <div className='flex-1'>
-                    <h1 className="text-5xl font-thin">Join Now!</h1>
+                <div className='my-10'>
+                    <h1 className="text-5xl md:text-7xl font-thin">Trusted by <br/>
+                     over <span className='text-blue-400'>1,000,000</span> <br/>
+                        teams worldwide</h1>
                     <p className="py-6">Coincidentally, that’s exactly what you get from SafeSpace - a free online task management app that’s easy to use and features dozens of collaboration tools.</p>
-                    <Link to='/dashboard'><button className='px-8 py-3 font-bold bg-blue-400 rounded-3xl text-white mt-2'>Let's Explore</button></Link>
+                    <Link to='/dashboard'><button className='px-8 py-3 font-bold bg-blue-400 shadow-2xl rounded-3xl text-white mt-2'>Let's Explore</button></Link>
                 </div>
             </Container>
         </div>

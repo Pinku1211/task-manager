@@ -82,8 +82,8 @@ const Task = ({ task, refetch }) => {
     }
 
 
-    return <div ref={drag} key={task._id} className={`bg-base-100 shadow-xl rounded-md ${isDragging ? "opacity-25" : ""} p-2 my-3 cursor-pointer`}>
-        <div className="flex items-center justify-between text-left">
+    return <div ref={drag} key={task._id} className={`bg-base-100 shadow-xl rounded-md  ${isDragging ? "opacity-25" : ""} p-2 my-3 cursor-pointer`}>
+        <div className="flex items-center justify-between text-left  z-0">
             <div className="overflow-x-auto">
                 <table className="table">
                     <thead>

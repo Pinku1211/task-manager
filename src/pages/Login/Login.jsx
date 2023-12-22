@@ -2,18 +2,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import useAuth from '../../hooks/useAuth'
 import toast from 'react-hot-toast'
+import { useState } from 'react'
 
 const Login = () => {
   const { signIn, signInWithGoogle } = useAuth()
   const navigate = useNavigate()
 
-
   const handleLogin = e => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const email = form.get('email')
-    const password = form.get('password')
-
+    const password = form.get('password');
     signIn(email, password)
       .then(result => {
         toast.success('logged in successfully')
@@ -21,6 +20,7 @@ const Login = () => {
       })
       .catch(error => {
         console.error(error);
+        toast.error(`${error}`)
       })
   }
 
@@ -34,6 +34,7 @@ const Login = () => {
       })
       .catch(error => {
         console.log(error)
+        
       })
   }
 
